@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Monitoring</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <h2 class="dashboard-title">Dashboard Monitoring</h2>
+    <a href="#contact" class="contact-link">Contact</a>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="menu" id="menu">
+    <a href="/temperature">Suhu Udara</a>
+    <a href="/humidity">Kelembapan Udara</a>
+    <a href="/switch">Status Saklar</a>
+    <a href="/soil">Kelembapan Tanah</a>
+  </div>
+
+  <!-- Isi Dashboard -->
+  <div class="dashboard" style="margin-top: 100px;">
+    <div class="row">
+      <a class="card" href="/temperature">
+        <h2>Suhu Udara</h2>
+      </a>
+      <a class="card" href="/humidity">
+        <h2>Kelembapan Udara</h2>
+      </a>
+    </div>
+
+    <div class="row">
+      <a class="card" href="/switch">
+        <h2>History</h2>
+      </a>
+      <a class="card" href="/soil">
+        <h2>Kelembapan Tanah</h2>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+
+</body>
+</html>

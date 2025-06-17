@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informasi Suhu</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .container {
+      max-width: 700px;
+      margin: 130px auto 40px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      padding: 30px 40px;
+      text-align: center;
+    }
+
+    .container h1 {
+      color: #036aa1;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 1.2em;
+    }
+
+    .temperature-box {
+      padding: 10px 20px;
+      background-color: #ecf0f1;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #2c3e50;
+      min-width: 150px;
+    }
+
+    .status-box {
+      padding: 10px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      min-width: 150px;
+    }
+
+    .status-cold { background-color: #3498db; }
+    .status-normal { background-color: #2ecc71; }
+    .status-hot { background-color: #f39c12; }
+    .status-very-hot { background-color: #e74c3c; }
+
+    .btn-back {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 25px;
+      background-color: #036aa1;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+    }
+
+    .btn-back:hover { background-color: #024e7c; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="icon">🌡️</div>
+    <h1>Informasi Suhu</h1>
+
+    <div class="info-row">
+      <div>
+        <div class="temperature-box" id="temp1">ESP1: <%= data.temperature1 %> °C</div>
+        <br>
+        <div class="status-box status-normal" id="status1">Status: --</div>
+      </div>
+
+      <div>
+        <div class="temperature-box" id="temp2">ESP2: <%= data.temperature2 %> °C</div>
+        <br>
+        <div class="status-box status-normal" id="status2">Status: --</div>
+      </div>
+    </div>
+
+    <a href="/" class="btn-back">← Kembali ke Dashboard</a>
+  </div>
+
+<script>
+  function updateStatus(statusBox, temperature) {
+    if (temperature > 35) {
+      statusBox.className = 'status-box status-very-hot';
+      statusBox.innerText = 'Status: Terlalu Panas';
+    } else if (temperature > 30) {
+      statusBox.className = 'status-box status-hot';
+      statusBox.innerText = 'Status: Panas';
+    } else if (temperature >= 20) {
+      statusBox.className = 'status-box status-normal';
+      statusBox.innerText = 'Status: Normal';
+    } else {
+      statusBox.className = 'status-box status-cold';
+      statusBox.innerText = 'Status: Dingin';
+    }
+  }
+
+  // Auto update every 5 seconds
+  setInterval(() => {
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(data => {
+        const temp1 = parseFloat(data.temperature1);
+        const temp2 = parseFloat(data.temperature2);
+        
+        document.getElementById('temp1').innerText = `ESP1: ${temp1} °C`;
+        document.getElementById('temp2').innerText = `ESP2: ${temp2} °C`;
+
+        updateStatus(document.getElementById('status1'), temp1);
+        updateStatus(document.getElementById('status2'), temp2);
+      });
+  }, 5000);
+
+  // Initial update
+  updateStatus(
+    document.getElementById('status1'), 
+    parseFloat('<%= data.temperature1 %>')
+  );
+  updateStatus(
+    document.getElementById('status2'), 
+    parseFloat('<%= data.temperature2 %>')
+  );
+</script>
+
+</body>
+</html>

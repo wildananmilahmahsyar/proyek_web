@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Riwayat Data Sensor</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 120px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .history-table th, .history-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .history-table th {
+      background: #f5f5f5;
+    }
+    .sensor-section {
+      margin-bottom: 30px;
+    }
+    .btn-back {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #036aa1;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+    canvas {
+      max-width: 100%;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Riwayat Data Sensor (24 Jam Terakhir)</h1>
+    <a href="/download-history" class="btn-back" style="margin-top: 10px;">⬇ Download Excel</a>
+
+    <!-- Chart Area -->
+    <canvas id="soilChart"></canvas>
+
+    <!-- Tabel Riwayat -->
+    <div id="history-content"></div>
+
+    <a href="/" class="btn-back">← Kembali ke Dashboard</a>
+  </div>
+
+  <script>
+    function formatDate(timestamp) {
+      return new Date(timestamp).toLocaleString('id-ID');
+    }
+
+    fetch('/history-data')
+      .then(res => res.json())
+      .then(data => {
+        const content = document.getElementById('history-content');
+
+        // 1️⃣ GRAFIK KELEMBAPAN TANAH
+        const labels = data.esp1_soil?.map(e => new Date(e.ts).toLocaleTimeString()) || [];
+        const soil1Data = data.esp1_soil?.map(e => parseFloat(e.value)) || [];
+        const soil2Data = data.esp2_soil?.map(e => parseFloat(e.value)) || [];
+
+        const ctx = document.getElementById('soilChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'ESP1 Soil',
+                data: soil1Data,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.4
+              },
+              {
+                label: 'ESP2 Soil',
+                data: soil2Data,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                tension: 0.4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: 'Grafik Kelembapan Tanah (24 Jam Terakhir)'
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 110
+              }
+            }
+          }
+        });
+
+        // 2️⃣ TABEL DATA
+        Object.keys(data).forEach(key => {
+          const section = document.createElement('div');
+          section.className = 'sensor-section';
+
+          section.innerHTML = `
+            <h2>${key}</h2>
+            <table class="history-table">
+              <tr>
+                <th>Waktu</th>
+                <th>Nilai</th>
+              </tr>
+              ${data[key].map(item => `
+                <tr>
+                  <td>${formatDate(item.ts)}</td>
+                  <td>${item.value}</td>
+                </tr>
+              `).join('')}
+            </table>
+          `;
+          content.appendChild(section);
+        });
+      })
+      .catch(error => {
+        document.getElementById('history-content').innerHTML =
+          '<p style="color: red;">Gagal memuat data riwayat: ' + error.message + '</p>';
+      });
+  </script>
+</body>
+</html>

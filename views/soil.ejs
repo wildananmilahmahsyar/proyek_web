@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelembapan Tanah</title>
+  <link rel="stylesheet" href="/style.css">
+  <style>
+    .container { max-width: 600px; margin: 130px auto 40px; background: rgba(255,255,255,0.95); border-radius: 15px; box-shadow: 0 6px 15px rgba(0,0,0,0.1); padding: 30px 40px; }
+    .container h1 { text-align: center; color: #036aa1; margin-bottom: 25px; font-size: 28px; }
+    .info-table { width: 100%; border-collapse: collapse; font-size: 1.2em; }
+    .info-table td { padding: 15px 10px; border-bottom: 1px solid #ddd; }
+    .info-table td.label { font-weight: bold; color: #333; width: 50%; }
+    .info-table td.value { color: #036aa1; }
+    .btn-back { display: block; width: fit-content; margin: 30px auto 0; padding: 10px 25px; background-color: #036aa1; color: white; border-radius: 6px; text-decoration: none; text-align: center; }
+    .btn-back:hover { background-color: #024e7c; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kelembapan Tanah</h1>
+      <table class="info-table">
+        <tr>
+          <td class="label">Kelembapan Tanah ESP1</td>
+          <td class="value"><%= data.soil1 %> %</td>
+        </tr>
+        <tr>
+          <td class="label">Kelembapan Tanah ESP2</td>
+          <td class="value"><%= data.soil2 %> %</td>
+        </tr>
+      </table>
+    <a href="/" class="btn-back">← Kembali ke Dashboard</a>
+  </div>
+  <script>
+  setInterval(() => {
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(data => {
+        document.querySelector('tr:nth-child(1) .value').innerText = `${data.soil1} %`;
+        document.querySelector('tr:nth-child(2) .value').innerText = `${data.soil2} %`;
+      });
+  }, 5000);
+  </script>
+
+</body>
+</html>
