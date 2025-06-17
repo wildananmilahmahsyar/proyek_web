@@ -68,8 +68,8 @@ class ThingsboardClient extends EventEmitter {
     // ✅ Tambahan: Ambil data telemetry terakhir via REST API
     async getLatestTelemetry() {
         // token JWT yang di ambil dari ThingsBoard (cukup copy jwt token di account bagian security)
-        const jwt = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtZmFkZWxoYXN5aW02QGdtYWlsLmNvbSIsInVzZXJJZCI6ImVhYzFjNWIwLTMwMDYtMTFmMC1hYzA3LTdkNDQzMTE3ZjNmNyIsInNjb3BlcyI6WyJURU5BTlRfQURNSU4iXSwic2Vzc2lvbklkIjoiODY3ZTI1YzItMWQwZC00ZWRiLWFjMTAtYjdkNzdmNTkzZDE5IiwiZXhwIjoxNzUwMTUxMzkxLCJpc3MiOiJ0aGluZ3Nib2FyZC5jbG91ZCIsImlhdCI6MTc1MDEyMjU5MSwiZmlyc3ROYW1lIjoiTXVoYW1tYWQiLCJsYXN0TmFtZSI6IkZhZGVsIiwiZW5hYmxlZCI6dHJ1ZSwiaXNQdWJsaWMiOmZhbHNlLCJpc0JpbGxpbmdTZXJ2aWNlIjpmYWxzZSwicHJpdmFjeVBvbGljeUFjY2VwdGVkIjp0cnVlLCJ0ZXJtc09mVXNlQWNjZXB0ZWQiOnRydWUsInRlbmFudElkIjoiZWE3MzU3OTAtMzAwNi0xMWYwLWFjMDctN2Q0NDMxMTdmM2Y3IiwiY3VzdG9tZXJJZCI6IjEzODE0MDAwLTFkZDItMTFiMi04MDgwLTgwODA4MDgwODA4MCJ9.9fRlkHuUDXzK68VkbQSMN6GNziZ0-ge2EUF4fFBNWVIL3E9dUjZwLaxIohBeeKgDvrWKcZ_TEPqMOoGAF0P_6g'; // tempel lengkap
-        const deviceId = '2ae6abb0-3007-11f0-80e6-43c583a0c385';
+        const jwt = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5YXlhdGExNDFAZ21haWwuY29tIiwidXNlcklkIjoiN2UzMTU5YjAtNDliZi0xMWYwLWFkZDItMDkzZjg0MWNjNWRjIiwic2NvcGVzIjpbIlRFTkFOVF9BRE1JTiJdLCJzZXNzaW9uSWQiOiJhZjA3NDg4Yi1hNzllLTQwN2QtYWUwMC0wNDc5NTA5Yzg4ZmYiLCJleHAiOjE3NTAxNTE2MzYsImlzcyI6InRoaW5nc2JvYXJkLmNsb3VkIiwiaWF0IjoxNzUwMTIyODM2LCJmaXJzdE5hbWUiOiJBaG1hZCIsImxhc3ROYW1lIjoiWWF5YXQiLCJlbmFibGVkIjp0cnVlLCJpc1B1YmxpYyI6ZmFsc2UsImlzQmlsbGluZ1NlcnZpY2UiOmZhbHNlLCJwcml2YWN5UG9saWN5QWNjZXB0ZWQiOnRydWUsInRlcm1zT2ZVc2VBY2NlcHRlZCI6dHJ1ZSwidGVuYW50SWQiOiI3ZGZhZTA2MC00OWJmLTExZjAtYWRkMi0wOTNmODQxY2M1ZGMiLCJjdXN0b21lcklkIjoiMTM4MTQwMDAtMWRkMi0xMWIyLTgwODAtODA4MDgwODA4MDgwIn0.yAw8l8KmUezWY3f5VLoL-gmz4ThQ-aGXBTAFaHtrYm0XakfBxKK-s7Z6MnvjpW1JbM6s1xeOJQZVUJGncfLH5g'; // tempel lengkap
+        const deviceId = '9ba728d0-49bf-11f0-9e49-05adc209a747';
 
         try {
             const response = await axios.get(
